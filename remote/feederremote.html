@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feeder Control</title>
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feeder Control</h1>
+        <button class="button" id="feeder-on">Turn On Feeder</button>
+        <button class="button" id="feeder-off">Turn Off Feeder</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const feederOnButton = document.getElementById('feeder-on');
+            const feederOffButton = document.getElementById('feeder-off');
+
+            feederOnButton.addEventListener('click', async () => {
+                await toggleFeeder('on');
+            });
+
+            feederOffButton.addEventListener('click', async () => {
+                await toggleFeeder('off');
+            });
+
+            async function toggleFeeder(status) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/feeder/${status}`, {
+                        method: 'POST'
+                    });
+                    if (response.ok) {
+                        console.log(`Feeder turned ${status}`);
+                    } else {
+                        throw new Error('Failed to toggle feeder');
+                    }
+                } catch (error) {
+                    console.error('Error toggling feeder:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

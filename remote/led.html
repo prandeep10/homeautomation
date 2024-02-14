@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Remote</title>
+</head>
+<body>
+
+<h1>LED Remote</h1>
+<button id="ledToggle">Toggle LED</button>
+<p id="ledStatus">LED Status: </p>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ledToggleBtn = document.getElementById('ledToggle');
+  const ledStatusText = document.getElementById('ledStatus');
+
+  const toggleLed = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/led/' + (ledStatusText.textContent.includes('off') ? 'on' : 'off'), { method: 'POST' });
+      if (!response.ok) {
+        throw new Error(`Failed to toggle LED: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      ledStatusText.textContent = data.message;
+    } catch (error) {
+      console.error('Error toggling LED:', error);
+      ledStatusText.textContent = error.message;
+    }
+  };
+
+  ledToggleBtn.addEventListener('click', toggleLed);
+});
+</script>
+
+</body>
+</html>

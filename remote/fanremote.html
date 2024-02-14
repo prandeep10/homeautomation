@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fan Remote</title>
+</head>
+<body>
+  <h1>Fan Remote</h1>
+  <button onclick="changeFanSpeed(1)">Speed 1</button>
+  <button onclick="changeFanSpeed(2)">Speed 2</button>
+  <button onclick="changeFanSpeed(3)">Speed 3</button>
+
+  <script>
+    async function changeFanSpeed(speed) {
+      try {
+        const response = await fetch(`http://localhost:3001/api/fan/speed/${speed}`, {
+          method: 'POST'
+        });
+        const data = await response.json();
+        console.log(data.message);
+      } catch (error) {
+        console.error('Error: Failed to change fan speed', error);
+      }
+    }
+  </script>
+</body>
+</html>

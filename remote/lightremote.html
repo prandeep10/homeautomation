@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Control</title>
+  <style>
+    /* Add your CSS styles here */
+    .remote-control {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin: 20px auto;
+    }
+
+    .remote-control h2 {
+      margin-top: 0;
+    }
+
+    .light-buttons button {
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .light-selection {
+      margin-top: 20px;
+    }
+
+    .light-selection label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .light-selection select {
+      width: 100%;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="remote-control">
+  <h2>Remote Control</h2>
+  <div class="light-buttons">
+    <button onclick="controlLight('turnOn')">Turn On</button>
+    <button onclick="controlLight('turnOff')">Turn Off</button>
+  </div>
+  <div class="light-selection">
+    <label for="light-select">Select Light:</label>
+    <select id="light-select">
+      <option value="">Select</option>
+      <option value="light1">Light 1</option>
+      <option value="light2">Light 2</option>
+      <option value="light3">Light 3</option>
+      <option value="light4">Light 4</option>
+    </select>
+  </div>
+</div>
+
+<script>
+    function controlLight(action) {
+      const selectedLight = document.getElementById('light-select').value;
+      if (!selectedLight) {
+        alert('Please select a light first');
+        return;
+      }
+  
+      // Update the URL based on the action
+      let url;
+      if (action === 'turnOn') {
+        url = `http://localhost:3001/api/control/light/${selectedLight}/on`;
+      } else if (action === 'turnOff') {
+        url = `http://localhost:3001/api/control/light/${selectedLight}/off`;
+      }
+  
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ action }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        alert(data.message);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+    }
+  </script>
+  
+</body>
+</html>

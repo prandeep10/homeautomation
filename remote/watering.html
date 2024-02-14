@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Droplet Remote</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <button id="turnOnButton" class="button">Turn Water Droplets On</button>
+  <button id="turnOffButton" class="button">Turn Water Droplets Off</button>
+</div>
+
+<script>
+  document.getElementById('turnOnButton').addEventListener('click', async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/water/on', { method: 'POST' });
+      if (!response.ok) {
+        throw new Error('Failed to turn water droplets on');
+      }
+      alert('Water droplets turned on');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error turning water droplets on');
+    }
+  });
+
+  document.getElementById('turnOffButton').addEventListener('click', async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/water/off', { method: 'POST' });
+      if (!response.ok) {
+        throw new Error('Failed to turn water droplets off');
+      }
+      alert('Water droplets turned off');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error turning water droplets off');
+    }
+  });
+</script>
+
+</body>
+</html>

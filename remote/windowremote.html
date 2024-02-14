@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Window Remote</title>
+    <style>
+        .remote {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        button#openBtn {
+            background-color: green;
+            color: white;
+            border: none;
+        }
+        
+        button#closeBtn {
+            background-color: red;
+            color: white;
+            border: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="remote">
+        <button id="openBtn">Open Window</button>
+        <button id="closeBtn">Close Window</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openBtn = document.getElementById('openBtn');
+            const closeBtn = document.getElementById('closeBtn');
+        
+            openBtn.addEventListener('click', function() {
+                // Perform an action to open the window
+                console.log('Opening window...');
+                sendWindowAction('open');
+            });
+        
+            closeBtn.addEventListener('click', function() {
+                // Perform an action to close the window
+                console.log('Closing window...');
+                sendWindowAction('close');
+            });
+        
+            function sendWindowAction(action) {
+                // Send an AJAX request to your server to perform the window action
+                fetch(`http://localhost:3001/api/window/${action}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to perform window action');
+                    }
+                    console.log(`Window ${action}ed successfully.`);
+                })
+                .catch(error => {
+                    console.error('Error performing window action:', error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
